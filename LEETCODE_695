@@ -1,0 +1,31 @@
+bool isSafe(int i,int j,vector<vector<int>>& grid,vector<vector<bool>>&visited)
+    {  
+        
+        return (i>=0 && j>=0 && i<grid.size() && j<grid[0].size() && grid[i][j]==1 && visited[i][j]==false);    
+    }
+    int DFS(int i,int j,vector<vector<int>>& grid,vector<vector<bool>>&visited)
+    {   static vector<pair<int,int>> neighbor={{-1,0},{1,0},{0,-1},{0,1}};
+        visited[i][j]=true;
+        int res=1;
+        for(auto x:neighbor)
+        {  if(isSafe(i+x.first,j+x.second,grid,visited)==true)
+              res+=DFS(i+x.first,j+x.second,grid,visited);
+        }
+        return res;
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int m=grid.size(),n=grid[0].size();
+        vector<bool>vt(n,false);
+        vector<vector<bool>>visited(m,vt);
+        int res=0;
+        for(int i=0;i<m;++i)
+        {  for(int j=0;j<n;++j)
+            {  if(grid[i][j]==1 && visited[i][j]==false)
+                { int x=DFS(i,j,grid,visited);
+                  res=max(res,x);
+                }
+            }
+        }
+        return res;
+    }
+};
